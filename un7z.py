@@ -7,9 +7,8 @@
 """
 import click
 import os
-from getpass import getpass
-from py7zr import SevenZipFile
 from datetime import datetime
+from py7zr import SevenZipFile
 
 
 ext = '.7z'
