@@ -56,4 +56,3 @@ def extract(target):
 
 if __name__ == '__main__':
     extract()
-
