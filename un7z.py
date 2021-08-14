@@ -9,15 +9,17 @@ import click
 import os
 from getpass import getpass
 from py7zr import SevenZipFile
+from datetime import datetime
 
 
 ext = '.7z'
 
 
-def _extract(file, password):
+def _extract(file):
     """extract contents of a filename.7z file
     and write to /filename directory
     """
+    password = f'osaka{datetime.now().strftime("%y%m")}'
     try:
         path = os.path.abspath(file)
         out_dir = f'{os.path.split(path)[0]}/{file[:file.index(ext)]}'
@@ -38,10 +40,9 @@ def extract(target):
     if target is None:
         print('No file or directory specified: --target=file/directory')
         return
-    password = getpass("Enter password: ")
     if os.path.isfile(target):
         try:
-            _extract(target, password)
+            _extract(target)
         except Exception as e:
             print(f'An error occurred while '
                   f'extracting contents of {target}: {e}')
@@ -56,3 +57,4 @@ def extract(target):
 
 if __name__ == '__main__':
     extract()
+
