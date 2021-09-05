@@ -61,12 +61,9 @@ def fetch_tweets_by_hashtag(hashtag, limit=RETURNED_TWEET_COUNT_DEFAULT):
     # TODO: add error handling here later (when results.staus_code != 200)
     print(results.status_code)
     tweets = results.json()['data']
-    # if limit < TWEET_COUNT_LOWER_LIMIT:
-    #     return format_results(tweets[:limit])
-    # return format_results(tweets)
     if limit < TWEET_COUNT_LOWER_LIMIT:
-        return tweets[:limit]
-    return tweets
+        return format_results(tweets[:limit])
+    return format_results(tweets)
 
 
 def fetch_tweets_by_user(user, limit=RETURNED_TWEET_COUNT_DEFAULT):
@@ -84,8 +81,8 @@ def fetch_tweets_by_user(user, limit=RETURNED_TWEET_COUNT_DEFAULT):
     results = get(url, headers=create_headers())
     tweets = results.json()['data']
     if limit < TWEET_COUNT_LOWER_LIMIT:
-        return tweets[:limit]
-    return tweets
+        return format_results(tweets[:limit])
+    return format_results(tweets)
 
 
 def format_results(data):
