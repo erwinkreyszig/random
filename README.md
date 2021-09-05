@@ -1,6 +1,6 @@
 local deployment instructions
 
-requirements:
+requirements
   1 . docker installed
 steps
   1. pull image from registry
