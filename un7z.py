@@ -8,9 +8,11 @@ import click
 import os
 from datetime import datetime
 from py7zr import SevenZipFile
+from zipfile import ZipFile
 
 
-ext = '.7z'
+EXT_7Z = '.7z'
+EXT_ZIP = '.zip'
 
 
 def _extract(file):
@@ -18,10 +20,18 @@ def _extract(file):
     and write to /filename directory
     """
     password = f'tpe{datetime.now().strftime("%Y%m")}'
+    out_dir, ext = os.path.splitext(file)
     try:
-        out_dir = file[:file.index(ext)]
-        with SevenZipFile(file, 'r', password=password) as archive:
-            archive.extractall(path=out_dir)
+        # out_dir = file[:file.index(ext)]
+        if ext == EXT_7Z:
+            with SevenZipFile(file, 'r', password=password) as archive:
+                archive.extractall(path=out_dir)
+        elif ext == EXT_ZIP:
+            with ZipFile(file, "r") as archive:
+                for info in archive.infolist():
+                    info.filename = info.filename.encode('cp437')\
+                        .decode('cp932')
+                archive.extractall(path=out_dir, pwd=password.encode('utf-8'))
         print(f'Extracted contents of {file} to {out_dir}')
     except Exception as e:
         print(f'An error occurred while extracting contents of {file}: {e}')
@@ -46,7 +56,7 @@ def extract(target):
     else:
         try:
             for file in os.listdir(target):
-                if file.endswith(ext):
+                if file.endswith(EXT_7Z) or file.endswith(EXT_ZIP):
                     _extract(os.path.abspath(f'{target}/{file}'))
         except Exception as e:
             print(f'An error occurred while reading files in {target}: {e}')
