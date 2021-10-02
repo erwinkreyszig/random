@@ -18,7 +18,7 @@ def _extract(file):
     """extract contents of a filename.7z file
     and write to /filename directory
     """
-    password = f'osaka{datetime.now().strftime("%y%m")}'
+    password = f'tpe{datetime.now().strftime("%Y%m")}'
     try:
         path = os.path.abspath(file)
         out_dir = f'{os.path.split(path)[0]}/{file[:file.index(ext)]}'
